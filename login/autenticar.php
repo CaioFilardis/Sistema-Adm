@@ -24,6 +24,10 @@ $totalRegistros = @count($resultado);
 
 if ($totalRegistros > 0) {
 
+    // Criar variáveis de sessão
+    $_SESSION['nome_usuario'] = $resultado[0]['nome'];
+    $_SESSION['nivel_usuario'] = $resultado[0]['nivel'];
+
     $nivel = $resultado[0]['nivel'];
 
     if ($nivel == 'Administrador') {
@@ -39,4 +43,5 @@ if ($totalRegistros > 0) {
     echo "<script language='javascript'>window.alert('Dados Incorretos')</script>";
     echo "<script language='javascript'>window.location='index.php'</script>";
 }
+
 ?>
