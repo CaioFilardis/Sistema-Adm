@@ -1,10 +1,11 @@
 <!-- Links -->
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/main.css">
 
 <!-- Scripts -->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 <body>
     <div id="login">
@@ -21,14 +22,14 @@
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Senha:</label><br>
-                                <input type="text" name="senha" id="password" class="form-control" placeholder="Inserir Senha" required>
+                                <input type="pasword" name="senha" id="password" class="form-control" placeholder="Inserir Senha" required>
                             </div>
                             <div class="form-group">
                                 <label for="remember-me" class="text-info"><span></span> <span></label><br>
-                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Enviar" style="background-color: #00180b;">
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Enviar" id="enviar">
                             </div>
                             <div id="register-link" class="text-right">
-                                <a href="#" class="text-info">Cadastre-se</a>
+                                <a href="#" class="text-info" data-bs-toggle="modal" data-bs-target="#modaCadastrar">Cadastre-se</a>
                             </div>
                         </form>
                     </div>
@@ -37,3 +38,36 @@
         </div>
     </div>
 </body>
+
+<!-- Modal  Cadastre-se -->
+<div class="modal" tabindex="-1" id="modaCadastrar">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cadastre-se</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div><!-- modal-header -->
+            <div class="modal-body">
+                <form action="" method="POST">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="nomeCad" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="emailCad" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Senha</label>
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="senhaCad" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div><!-- modal-footer -->
+                </form>
+            </div><!-- modal-body -->
+
+        </div><!-- modal-content -->
+    </div><!-- odal-dialog -->
+</div><!-- modal -->
