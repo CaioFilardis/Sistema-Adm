@@ -1,3 +1,7 @@
+<?php 
+    require_once("../conexao.php");
+?>
+
 <!-- Links -->
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link rel="stylesheet" href="css/main.css">
@@ -63,7 +67,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <button type="submit" class="btn btn-primary" name="btn-cadastrar">Registrar</button>
                     </div><!-- modal-footer -->
                 </form>
             </div><!-- modal-body -->
@@ -71,3 +75,19 @@
         </div><!-- modal-content -->
     </div><!-- odal-dialog -->
 </div><!-- modal -->
+
+<?php 
+
+if (isset($_POST['btn-cadastrar'])) {
+
+    $query = $pdo -> prepare("INSERT INTO usuarios (nome, email, senha, nivel) VALUES (:nome, :email, :senha, :nivel)");
+    $query -> bindValue(":nome", $_POST['nomeCad']);
+    $query -> bindValue(":email", $_POST['emailCad']);
+    $query -> bindValue(":senha", $_POST['senhaCad']);
+    $query -> bindValue(":nivel", 'Cliente');
+    $query -> execute();
+
+    echo "<script language='javascript'>window.alert('Cadastrado com sucesso')</script>";
+
+}
+?>
