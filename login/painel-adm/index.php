@@ -60,7 +60,7 @@ echo 'Nome Usuário: ' . $_SESSION['nome_usuario'] . 'e o nível do usuário é 
                     </li>
                 </ul>
                 <form method="GET" class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="txtBuscar">
+                    <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" name="txtBuscar">
                     <button class="btn btn-success" type="submit">Buscar</button>
                 </form><!-- d-flex -->
             </div><!-- collapse -->
@@ -71,7 +71,11 @@ echo 'Nome Usuário: ' . $_SESSION['nome_usuario'] . 'e o nível do usuário é 
         <button class="btn btn-success mt-4 mb-4" type="button" data-bs-toggle="modal" data-bs-target="#modalCadastrar">Novo usuário</button>
         <?php
 
-        $query = $pdo->query("SELECT * FROM usuarios"); // Apenas consulta
+        $txtBuscar = '%' . @$_GET['txtBuscar'] . '%'; // Buscar de forma aproximada
+        $query = $pdo->prepare("SELECT * FROM usuarios where nome LIKE :nome or email LIKE :email"); // Buscar de forma aproximada
+        $query->bindValue(":email", $txtBuscar);
+        $query->bindValue(":nome", $txtBuscar);
+        $query->execute();
         $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
         $totalRegistros = @count($resultado);
 
@@ -85,6 +89,7 @@ echo 'Nome Usuário: ' . $_SESSION['nome_usuario'] . 'e o nível do usuário é 
                         <th scope="col">Email</th>
                         <th scope="col">Senha</th>
                         <th scope="col">Nivel</th>
+                        <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -97,6 +102,7 @@ echo 'Nome Usuário: ' . $_SESSION['nome_usuario'] . 'e o nível do usuário é 
                         $email = $resultado[$i]['email'];
                         $senha = $resultado[$i]['senha'];
                         $nivel = $resultado[$i]['nivel'];
+                        $id = $resultado[$i]['id'];
 
                     ?>
 
@@ -106,7 +112,14 @@ echo 'Nome Usuário: ' . $_SESSION['nome_usuario'] . 'e o nível do usuário é 
                             <td><?php echo $email ?></td>
                             <td><?php echo $senha ?></td>
                             <td><?php echo $nivel ?></td>
-
+                            <td>
+                                <a href="index.php?funcao=editar&id=<?php echo $id?>" title="Editar Registro" class="mr-1">
+                                    <img src="../../img/edit-3.svg" alt="">
+                                 </a>
+                                 <a href="">
+                                    <img src="../../img/trash-2.svg" alt="">
+                                 </a>
+                            </td>
                         </tr>
 
 
@@ -173,16 +186,19 @@ echo 'Nome Usuário: ' . $_SESSION['nome_usuario'] . 'e o nível do usuário é 
 if (isset($_POST['btn-cadastrar'])) {
 
 
-    $queryVerificar = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email");
+    $verificar = $pdo->prepare("SELECT * FROM usuarios where email = :email");
 
-    $queryVerificar->bindValue(":email", $_POST['emailCad']);
+    $verificar->bindValue(":email", $_POST['emailCad']);
 
-    $queryVerificar->execute();
+    $verificar->execute();
 
-    $resultadoVerificar = $queryVerificar -> fetchAll(PDO::FETCH_ASSOC);
-    $totalRegistrosVerificar = @count($resultadoVerificar);
+    $resVerificar = $verificar->fetchAll(PDO::FETCH_ASSOC);
+    $registrosVerificar = @count($resVerificar);
 
-    
+    if ($registrosVerificar > 0) {
+        echo "<script language='javascript'>window.alert('Usuário já está cadastrado')</script>";
+        return;
+    }
 
 
     $query = $pdo->prepare("INSERT INTO usuarios (nome, email, senha, nivel) VALUES (:nome, :email, :senha, :nivel)");
@@ -195,4 +211,12 @@ if (isset($_POST['btn-cadastrar'])) {
     echo "<script language='javascript'>window.alert('Cadastrado com sucesso')</script>";
     echo "<script language='javascript'>window.location='index.php'</script>";
 }
+?>
+
+<?php 
+
+    if (isset($_GET['editar'])) {
+        echo "<script language='javascript'>$('#modalCadastrar').modal('show')</script>";
+    }
+
 ?>
